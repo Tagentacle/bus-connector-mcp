@@ -53,8 +53,8 @@ publish/introspect 等总线操作:
 ## 状态
 
 🔲 **设计阶段** — 依赖 SDK 矩阵重构 (Q27) 完成后实现:
-- [ ] python-sdk-core: Inbox 组件
-- [ ] python-sdk-mcp: InboxMCP + BusMCPNode + helper 函数
+- [ ] tagentacle-py-core: Inbox 组件
+- [ ] tagentacle-py-mcp: InboxMCP + BusMCPNode + helper 函数
 - [ ] 本仓库: 组合上述组件为独立 App
 
 ## 安装

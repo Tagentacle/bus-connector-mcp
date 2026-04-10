@@ -53,8 +53,8 @@ publish/introspect and other bus operations:
 ## Status
 
 🔲 **Design phase** — depends on SDK matrix restructuring (Q27):
-- [ ] python-sdk-core: Inbox component
-- [ ] python-sdk-mcp: InboxMCP + BusMCPNode + helper functions
+- [ ] tagentacle-py-core: Inbox component
+- [ ] tagentacle-py-mcp: InboxMCP + BusMCPNode + helper functions
 - [ ] This repo: compose the above into a standalone app
 
 ## Install
