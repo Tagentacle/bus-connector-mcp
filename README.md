@@ -1,61 +1,63 @@
 # bus-connector-mcp
 
-> **客户机侧总线接入进程** — 外部 MCP 应用 (Cursor / Claude Code) 通过 InboxMCP 接入 Tagentacle 总线。
+> **The ROS of AI Agents** — Client-side bus access process for external MCP applications (Cursor / Claude Code) to connect to the Tagentacle bus via InboxMCP.
+
+[中文文档](README_CN.md)
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-## 定位
+## Overview
 
-bus-connector-mcp 是一个基于 Tagentacle SDK 构建的 **独立应用** (非 SDK 包)。它运行在客户机上，为不在 Tagentacle 生态内的外部 MCP 应用提供总线接入能力。
+bus-connector-mcp is a **standalone application** (not an SDK package) built on the Tagentacle SDK. It runs on the client machine, providing bus access to external MCP applications that are not part of the Tagentacle ecosystem.
 
 ```
-[客户机]                                   [远端 Tagentacle 集群]
+[Client Machine]                           [Remote Tagentacle Cluster]
 
 Cursor / Claude Code                        Tagentacle Daemon
      ↓ (MCP stdio/SSE)                            ↑
                                                    │
- bus-connector-mcp 进程  ──── network ────→  连接到 Daemon
- (InboxMCP + stdio/HTTP)                    (作为 Bus Node)
+ bus-connector-mcp  ──────── network ────→  Connects to Daemon
+ (InboxMCP + stdio/HTTP)                    (as a Bus Node)
 ```
 
-### 与 mcp-gateway 的关系
+### Relationship with mcp-gateway
 
 | | mcp-gateway | bus-connector-mcp |
 |---|---|---|
-| **运行位置** | 集群内 (服务端) | 客户机 (用户侧) |
-| **方向** | MCP Server → 进入 Bus (注册/发现) | Bus → 出到 MCP Client (接入) |
-| **角色** | 管理/发布 published MCP servers | 为外部 App 提供总线接入 |
+| **Runs on** | Cluster (server-side) | Client machine (user-side) |
+| **Direction** | MCP Server → into Bus (register/discover) | Bus → out to MCP Client (access) |
+| **Role** | Manage/publish published MCP servers | Provide bus access for external apps |
 
-### 两种 Tagentacle 用户 (Q25)
+### Two Types of Tagentacle Users (Q25)
 
-| 类型 | 启动方式 | bus 访问 | 需要 bus-connector-mcp? |
-|------|----------|----------|------------------------|
-| 原生节点 | tagentacle CLI | LifecycleNode 直连 | ❌ 不需要 |
-| 独立应用 | 自行启动 (Cursor 等) | 纯 MCP 连接 | ✅ 需要 |
+| Type | Launch Method | Bus Access | Needs bus-connector-mcp? |
+|------|---------------|------------|--------------------------|
+| Native Node | tagentacle CLI | LifecycleNode direct | No |
+| Independent App | Self-launched (Cursor, etc.) | Pure MCP | Yes |
 
-## 架构
+## Architecture
 
 ```
-bus-connector-mcp = LifecycleNode + InboxMCP + stdio/HTTP 端口
+bus-connector-mcp = LifecycleNode + InboxMCP + stdio/HTTP port
 
 InboxMCP (private MCP):
-  - subscribe_topic     订阅总线 topic
-  - unsubscribe_topic   取消订阅
-  - poll_messages        拉取缓存消息
-  - bus://mailbox/*      资源 (topic 消息概览)
+  - subscribe_topic     Subscribe to bus topics
+  - unsubscribe_topic   Unsubscribe
+  - poll_messages        Pull buffered messages
+  - bus://mailbox/*      Resources (topic message overview)
 
-publish/introspect 等总线操作:
-  → MCP Client → 远端 BusMCPNode (published MCP)
+publish/introspect and other bus operations:
+  → MCP Client → remote BusMCPNode (published MCP)
 ```
 
-## 状态
+## Status
 
-🔲 **设计阶段** — 依赖 SDK 矩阵重构 (Q27) 完成后实现:
-- [ ] python-sdk-core: Inbox 组件
-- [ ] python-sdk-mcp: InboxMCP + BusMCPNode + helper 函数
-- [ ] 本仓库: 组合上述组件为独立 App
+🔲 **Design phase** — depends on SDK matrix restructuring (Q27):
+- [ ] python-sdk-core: Inbox component
+- [ ] python-sdk-mcp: InboxMCP + BusMCPNode + helper functions
+- [ ] This repo: compose the above into a standalone app
 
-## 安装
+## Install
 
 ```bash
 git clone https://github.com/Tagentacle/bus-connector-mcp.git
