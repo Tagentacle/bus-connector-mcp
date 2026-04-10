@@ -1,0 +1,15 @@
+[project]
+name = "bus-connector-mcp"
+version = "0.1.0"
+description = "客户机侧总线接入进程 — 外部 MCP 应用通过 InboxMCP 接入 Tagentacle 总线"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "tagentacle-py-core",
+    "tagentacle-py-mcp",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

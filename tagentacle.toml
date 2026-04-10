@@ -1,0 +1,6 @@
+[package]
+name = "bus_connector_mcp"
+version = "0.1.0"
+description = "客户机侧总线接入进程 — 外部 MCP 应用通过 InboxMCP 接入 Tagentacle 总线"
+type = "executable"
+entry = "connector:main"
