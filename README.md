@@ -52,17 +52,46 @@ publish/introspect and other bus operations:
 
 ## Status
 
-🔲 **Design phase** — depends on SDK matrix restructuring (Q27):
-- [ ] tagentacle-py-core: Inbox component
-- [ ] tagentacle-py-mcp: InboxMCP + BusMCPNode + helper functions
-- [ ] This repo: compose the above into a standalone app
+✅ **Implemented** (Q27 SDK matrix complete):
+- [x] tagentacle-py-core: Inbox component
+- [x] tagentacle-py-mcp: InboxMCP + BusMCPNode + helper functions
+- [x] This repo: composes the above into a standalone app (`connector.py`, 108 LOC)
 
 ## Install
 
 ```bash
 git clone https://github.com/Tagentacle/bus-connector-mcp.git
 cd bus-connector-mcp
-# TODO: uv/pip install
+uv sync
+```
+
+## Run
+
+```bash
+# stdio (for Cursor / Claude Desktop)
+uv run python connector.py
+
+# HTTP (for web-based MCP clients)
+uv run python connector.py --transport http --port 8300
+```
+
+The connector registers with the Tagentacle daemon at
+`$TAGENTACLE_DAEMON` (default `127.0.0.1:9600`) and exposes the bus to
+the connected MCP client.
+
+## Cursor / Claude Desktop config
+
+```jsonc
+{
+  "mcpServers": {
+    "tagentacle": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/bus-connector-mcp",
+               "run", "python", "connector.py"],
+      "env": { "TAGENTACLE_DAEMON": "127.0.0.1:9600" }
+    }
+  }
+}
 ```
 
 ## Tagentacle Pkg
